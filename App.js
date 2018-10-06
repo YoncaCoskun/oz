@@ -1,14 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import Deck from "./screen/Deck";
+import Home from "./screen/Home";
 
-export default class App extends React.Component {
+class App extends React.Component {
   render() {
-    return (
-      <View style={styles.container}>
-        <Deck />
-      </View>
-    );
+    return <Home />;
   }
 }
 
@@ -20,3 +16,5 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   }
 });
+
+export default App;
