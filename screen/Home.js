@@ -1,24 +1,26 @@
-import React from "react";
+import React from 'react';
 import {
   Text,
   View,
-  FlatList,
   Animated,
   StyleSheet,
   Image,
-  ImageBackground
-} from "react-native";
-import { Header, Button, Icon } from "react-native-elements";
+  ImageBackground,
+  ListView,
+  FlatList,
+  TouchableOpacity,
+  Navigator
+} from 'react-native';
 
-import Tip from "../model/Tip";
-import SwipeCards from "react-native-swipe-cards";
-import NoMoreCards from "./NoMoreCards";
-import Card from "./Card";
-import { createBottomTabNavigator } from "react-navigation";
-//import Icon from "react-native-vektor-icons/Ionicons";
-//import { Ionicons } from "@expo/vector-icons";
+import { Header, Button, Icon, ListItem, List } from 'react-native-elements';
 
-class Home extends React.Component {
+import Tip from '../model/Tip';
+import SwipeCards from 'react-native-swipe-cards';
+import NoMoreCards from './NoMoreCards';
+import Card from './Card';
+import { createBottomTabNavigator } from 'react-navigation';
+
+class Cards extends React.Component {
   state = {
     data: []
   };
@@ -31,41 +33,30 @@ class Home extends React.Component {
   async getObject() {
     const json = await new Tip().getDataFromApi();
     this.setState({ data: json.tips });
-    /*<FlatList
-      data={this.state.data}
-      renderItem={({ item }) => <Text>{item.tip}</Text>}
-      keyExtractor={({ id }, index) => id}
-
-          <SwipeCards
-          cards={this.state.data}
-          renderCard={cardData => <Card {...cardData} />}
-          renderNoMoreCards={() => <NoMoreCards />}
-        />
-    />*/
   }
 
   render() {
     return (
       <ImageBackground
-        source={require("../assets/bg.png")}
+        source={require('../assets/bg.png')}
         style={{
-          width: "100%",
+          width: '100%',
           opacity: 0.95,
-          height: "100%",
-          justifyContent: "center",
-          alignContent: "center",
-          alignItems: "center"
+          height: '100%',
+          justifyContent: 'center',
+          alignContent: 'center',
+          alignItems: 'center'
         }}
       >
         <View>
           <Header
-            statusBarProps={{ barStyle: "light-content" }}
+            statusBarProps={{ barStyle: 'light-content' }}
             centerComponent={{
-              text: "Dr. Oz Diet Tips",
-              style: { color: "#fff" }
+              text: 'Dr. Oz Diet Tips',
+              style: { color: '#fff' }
             }}
-            outerContainerStyles={{ backgroundColor: "#3D6DCC" }}
-            innerContainerStyles={{ justifyContent: "space-around" }}
+            outerContainerStyles={{ backgroundColor: '#3D6DCC' }}
+            innerContainerStyles={{ justifyContent: 'space-around' }}
           />
           <SwipeCards
             cards={this.state.data}
@@ -78,22 +69,46 @@ class Home extends React.Component {
   }
 }
 
-class Settings extends React.Component {
+//let data = [{ id: 'a' }, { id: 'b' }, { id: 'c' }];
+let listeners = [];
+class CardList extends React.Component {
+  state = {
+    data: []
+  };
+  constructor(props) {
+    super(props);
+  }
+  componentWillMount() {
+    this.getObject();
+  }
+  async getObject() {
+    const json = await new Tip().getDataFromApi();
+    this.setState({ data: json.tips });
+  }
+
   render() {
     return (
       <ImageBackground
-        source={require("../assets/bg.png")}
+        source={require('../assets/bg.png')}
         style={{
-          width: "100%",
+          width: '100%',
           opacity: 0.95,
-          height: "100%",
-          justifyContent: "center",
-          alignContent: "center",
-          alignItems: "center"
+          height: '100%',
+          justifyContent: 'center',
+          alignContent: 'center',
+          alignItems: 'center'
         }}
       >
-        <View>
-          <Text>Settings!!!</Text>
+        <View style={styles.view}>
+          <FlatList
+            data={this.state.data}
+            keyExtractor={item => item.id}
+            renderItem={({ item, index }) => (
+              <View style={styles.separator}>
+                <Text style={styles.text}>{item.tip}</Text>
+              </View>
+            )}
+          />
         </View>
       </ImageBackground>
     );
@@ -101,26 +116,52 @@ class Settings extends React.Component {
 }
 
 export default createBottomTabNavigator({
-  Home: {
-    screen: Home,
+  Cards: {
+    screen: Cards,
     navigationOptions: {
-      tabBarLabel: "Cards",
+      tabBarLabel: 'Cards',
       tabBarIcon: ({ tintColor }) => <Icon name="credit-card" size={24} />
     }
   },
-  Settings: {
-    screen: Settings,
+  CardList: {
+    screen: CardList,
     navigationOptions: {
-      tabBarLabel: "List",
+      tabBarLabel: 'List',
       tabBarIcon: ({ tintColor }) => <Icon name="list" size={24} />
     }
   }
 });
 
 const styles = StyleSheet.create({
-  container: {
+  view: {
+    paddingTop: 30
+  },
+  text: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+    fontSize: 15,
+    textAlign: 'left'
+  },
+  separator: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: 'red'
+  },
+  container: {
+    height: 1,
+    width: '86%',
+    backgroundColor: '#CED0CE',
+    marginLeft: '14%'
+  },
+  listContainer: {
+    flex: 1,
+    backgroundColor: '#FFF'
+  },
+  listNavBar: {
+    height: 64,
+    backgroundColor: '#CCC'
+  },
+  row: {
+    padding: 10,
+    height: 44
   }
 });
