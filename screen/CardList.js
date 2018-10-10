@@ -1,66 +1,134 @@
 import React from 'react';
 import {
-  Text,
   View,
   StyleSheet,
   ImageBackground,
-  FlatList
+  FlatList,
+  ListView,
+  Image,
+  Text
 } from 'react-native';
-import { Button, List, ListItem, Header } from 'react-native-elements';
-
+import { List, ListItem, Header } from 'react-native-elements';
 import Tip from '../model/Tip';
+import PopupDialog from 'react-native-popup-dialog';
+
+var taskArray = [];
 
 class CardList extends React.Component {
   state = {
     data: [],
-    isLike: false
+    isLike: false,
+    isReady: false
   };
   constructor(props) {
     super(props);
+
+    var dataSource = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1.Id != r2.Id
+    });
+
+    this.state = {
+      tasks: taskArray,
+      dataSource: dataSource.cloneWithRows(taskArray),
+      isReady: false,
+      editMode: false
+    };
   }
-  componentWillMount() {
+  async componentWillMount() {
+    await Expo.Font.loadAsync({
+      Roboto: require('native-base/Fonts/Roboto.ttf'),
+      Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf')
+    });
+    this.setState({ isReady: true });
+  }
+  componentDidMount() {
     this.getObject();
   }
   async getObject() {
     const json = await new Tip().getDataFromApi();
-    this.setState({ data: json.tips });
+    taskArray = json.tips;
 
-    /* <View style={styles.view}>
-          <FlatList
-            data={this.state.data}
-            keyExtractor={item => item.id}
-            renderItem={({ item, index }) => (
-              <View style={styles.separator}>
-                <Text style={styles.text}>{item.tip}</Text>
-              </View>
-            )}
-          />
-        </View>*/
-    /*   <View style={styles.v_container}>
-          <FlatList
-            data={this.state.data}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <View style={styles.flatview}>
-                <Text style={styles.t_listTip}>{item.tip}</Text>
-                <Button
-                  style={{ flex: 1 }}
-                  large
-                  fontWeight="bold"
-                  backgroundColor="transparent"
-                  icon={{ name: 'heart', type: 'evilicon', color: 'red' }}
-                />
-              </View>
-            )}
-            ItemSeparatorComponent={this.renderLineSeparator}
-            keyExtractor={item => item.id}
-          />
-        </View>*/
+    //add property isChecked
+    taskArray = taskArray.map(data => {
+      var o = Object.assign({}, data);
+      o.isChecked = false;
+      return o;
+    });
+    //add property isLike
+    taskArray = taskArray.map(data => {
+      var oLike = Object.assign({}, data);
+      oLike.isLike = false;
+      return oLike;
+    });
+
+    this.setState({
+      tasks: taskArray,
+      dataSource: this.state.dataSource.cloneWithRows(taskArray),
+      isReady: true
+    });
   }
+  toggleEditMode() {
+    this.setState({ editMode: !this.state.editMode });
+    console.log('edit mode', this.state.editMode);
+  }
+  findTaskIndex(taskId) {
+    let { tasks } = this.state;
+    for (var i = 0; i < tasks.length; i++) {
+      if (tasks[i].id == taskId) {
+        return i;
+      }
+    }
+    return -1;
+  }
+  toggleCheckForLikeTask(taskId) {
+    var foundIndex = this.findTaskIndex(taskId);
 
-  render() {
+    var newTasks = this.state.tasks;
+    newTasks[foundIndex].isLike = !newTasks[foundIndex.isLike];
+
+    var newDataSource = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1.Id != r2.Id
+    });
+    this.setState({
+      tasks: taskArray,
+      dataSource: newDataSource.cloneWithRows(newTasks)
+    });
+
+    console.log('index', foundIndex);
+  }
+  renderRow(rowData, sectionId, rowId) {
     return (
-      <View style={styles.v_container}>
+      <ListItem
+        avatar={{ uri: rowData.image }}
+        style={styles.t_listTip}
+        title={rowData.tip}
+        rightIcon={
+          rowData.isLike
+            ? { name: 'heart', type: 'font-awesome', color: 'red' }
+            : { name: 'heart', type: 'evilicon', color: 'red' }
+        }
+        onPressRightIcon={() => this.toggleCheckForLikeTask(rowData.id)}
+        onPress={() => this.popupDialog.show()}
+      />
+    );
+  }
+  render() {
+    let currentView = <View />;
+
+    currentView = (
+      <ListView
+        style={styles.taskListView}
+        dataSource={this.state.dataSource}
+        renderRow={this.renderRow.bind(this)}
+        enableEmptySections={true}
+      />
+    );
+    if (!this.state.isReady) {
+      return <Expo.AppLoading />;
+    }
+
+    return (
+      <View>
         <Header
           statusBarProps={{ barStyle: 'light-content' }}
           centerComponent={{
@@ -70,58 +138,33 @@ class CardList extends React.Component {
           outerContainerStyles={{ backgroundColor: '#3D6DCC' }}
           innerContainerStyles={{ justifyContent: 'space-around' }}
         />
-        <List>
-          <FlatList
-            data={this.state.data}
-            keyExtractor={item => item.id}
-            renderItem={({ item, index }) => (
-              <ListItem
-                key={item.id}
-                style={styles.t_listTip}
-                title={item.tip}
-                rightIcon={
-                  item.isLike
-                    ? { name: 'heart', type: 'font-awesome', color: 'red' }
-                    : { name: 'heart', type: 'evilicon', color: 'red' }
-                }
-                onPressRightIcon={() => {
-                  //Toggle playing or stopped state with code that kind of looks like:
-                  if (item.isLike) {
-                    item.isLike = false;
-                  } else if (!item.like) {
-                    item.isLike = true;
-                  } else {
-                    item.isLike = true;
-                  }
-                }}
-                extraData={this.state}
-              />
-            )}
-          />
-        </List>
+
+        <ListView
+          style={styles.taskListView}
+          dataSource={this.state.dataSource}
+          renderRow={this.renderRow.bind(this)}
+          enableEmptySections={true}
+        />
+        <PopupDialog
+          ref={popupDialog => {
+            this.popupDialog = popupDialog;
+          }}
+        >
+          <View>
+            <Text>Hello</Text>
+          </View>
+        </PopupDialog>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  v_container: {
-    borderTopWidth: 0,
-    borderBottomWidth: 0
-  },
-  flatview: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  t_listTip: {
-    fontSize: 12,
-    flex: 0
-  },
-  email: {
-    color: 'red'
-  },
-  b_listStyle: {
+  button: {
     backgroundColor: 'transparent'
+  },
+  taskListView: {
+    paddingBottom: 100
   }
 });
 
