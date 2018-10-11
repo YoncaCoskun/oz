@@ -15,11 +15,6 @@ import PopupDialog from 'react-native-popup-dialog';
 var taskArray = [];
 
 class CardList extends React.Component {
-  state = {
-    data: [],
-    isLike: false,
-    isReady: false
-  };
   constructor(props) {
     super(props);
 
@@ -67,10 +62,6 @@ class CardList extends React.Component {
       isReady: true
     });
   }
-  toggleEditMode() {
-    this.setState({ editMode: !this.state.editMode });
-    console.log('edit mode', this.state.editMode);
-  }
   findTaskIndex(taskId) {
     let { tasks } = this.state;
     for (var i = 0; i < tasks.length; i++) {
@@ -104,8 +95,13 @@ class CardList extends React.Component {
         title={rowData.tip}
         rightIcon={
           rowData.isLike
-            ? { name: 'heart', type: 'font-awesome', color: 'red' }
-            : { name: 'heart', type: 'evilicon', color: 'red' }
+            ? {
+                name: 'heart',
+                type: 'font-awesome',
+                color: 'red',
+                fontSize: 30
+              }
+            : { name: 'heart', type: 'evilicon', color: 'red', fontSize: 30 }
         }
         onPressRightIcon={() => this.toggleCheckForLikeTask(rowData.id)}
         onPress={() => this.popupDialog.show()}

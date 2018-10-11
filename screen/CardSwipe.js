@@ -10,7 +10,7 @@ import { Header } from 'react-native-elements';
 import SwipeCards from 'react-native-swipe-cards';
 import NoMoreCards from './NoMoreCards';
 import Tip from '../model/Tip';
-import Card from './Card';
+import CardTemplate from './CardTemplate';
 
 class CardSwipe extends React.Component {
   state = {
@@ -52,7 +52,7 @@ class CardSwipe extends React.Component {
           />
           <SwipeCards
             cards={this.state.data}
-            renderCard={cardData => <Card {...cardData} />}
+            renderCard={cardData => <CardTemplate {...cardData} />}
             renderNoMoreCards={() => <NoMoreCards />}
           />
         </View>
