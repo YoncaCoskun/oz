@@ -2,9 +2,10 @@ import React from 'react';
 import {
   Text,
   View,
-  StyleSheet,
   ImageBackground,
-  FlatList
+  FlatList,
+  Dimensions,
+  StyleSheet
 } from 'react-native';
 import { Header } from 'react-native-elements';
 import SwipeCards from 'react-native-swipe-cards';
@@ -25,6 +26,14 @@ class CardSwipe extends React.Component {
   async getObject() {
     const json = await new Tip().getDataFromApi();
     this.setState({ data: json.tips });
+    /*<SwipeCards
+            cards={this.state.data}
+            renderCard={cardData => <CardTemplate {...cardData} />}
+            renderNoMoreCards={() => <NoMoreCards />}
+            showYup={false}
+            showNope={false}
+          />
+     */
   }
 
   render() {
@@ -54,6 +63,8 @@ class CardSwipe extends React.Component {
             cards={this.state.data}
             renderCard={cardData => <CardTemplate {...cardData} />}
             renderNoMoreCards={() => <NoMoreCards />}
+            showYup={false}
+            showNope={false}
           />
         </View>
       </ImageBackground>

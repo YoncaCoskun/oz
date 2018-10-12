@@ -8,6 +8,7 @@ import {
   ListView
 } from 'react-native-elements';
 import { Right } from 'native-base';
+import Carousel from 'react-native-snap-carousel';
 //import Button from 'react-native-button';
 //import ActionButton from 'react-native-action-button';
 
@@ -33,10 +34,7 @@ class CardTemplate extends React.Component {
           size={24}
           raised
           iconStyle={{ fontSize: 30, color: 'red' }}
-          containerStyle={{
-            marginRight: 0,
-            alignSelf: 'flex-end'
-          }}
+          containerStyle={{ marginRight: 0, alignSelf: 'flex-end' }}
           onPress={console.log(this.props.id)}
         />
       </Card>
