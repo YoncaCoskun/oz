@@ -6,7 +6,8 @@ import {
   FlatList,
   ListView,
   Image,
-  Text
+  Text,
+  Alert
 } from 'react-native';
 import {
   List,
@@ -17,8 +18,6 @@ import {
   TouchableNativeFeedback
 } from 'react-native-elements';
 import Tip from '../model/Tip';
-import PopupDialog from 'react-native-popup-dialog';
-import PopUpDialog from './PopUpDialog';
 
 var taskArray = [];
 
@@ -95,6 +94,19 @@ class CardList extends React.Component {
 
     console.log('index', foundIndex);
   }
+  openDialog(rowData) {
+    Alert.alert(
+      rowData.title,
+      rowData.tip,
+      [
+        {
+          text: 'Kapat',
+          style: 'cancel'
+        }
+      ],
+      { cancelable: false }
+    );
+  }
   renderRow(rowData, sectionId, rowId) {
     return (
       <ListItem
@@ -113,7 +125,7 @@ class CardList extends React.Component {
             : { name: 'heart', type: 'evilicon', color: 'red', fontSize: 30 }
         }
         onPressRightIcon={() => this.toggleCheckForLikeTask(rowData.id)}
-        onPress={() => this.popupDialog.show()}
+        onPress={() => this.openDialog(rowData)}
       />
     );
   }
@@ -139,26 +151,6 @@ class CardList extends React.Component {
           renderRow={this.renderRow.bind(this)}
           enableEmptySections={true}
         />
-        <PopupDialog
-          ref={popupDialog => {
-            this.popupDialog = popupDialog;
-          }}
-        >
-          <View>
-            <Card containerStyle={{ padding: 0 }}>
-              {taskArray.map(u => {
-                return (
-                  <ListItem
-                    key={u.id}
-                    roundAvatar
-                    title={u.title}
-                    avatar={{ uri: u.image }}
-                  />
-                );
-              })}
-            </Card>
-          </View>
-        </PopupDialog>
       </View>
     );
   }

@@ -3,21 +3,13 @@ import React from 'react';
 import { Icon } from 'react-native-elements';
 import { createBottomTabNavigator } from 'react-navigation';
 import CardList from '../screen/CardList';
-import CardSwipe from '../screen/CardSwipe';
-import Swiper from '../screen/Swiper';
+import CardSwiper from '../screen/CardSwiper';
 
 const Home = createBottomTabNavigator({
-  CardSwipe: {
-    screen: CardSwipe,
+  Swiper: {
+    screen: CardSwiper,
     navigationOptions: {
       tabBarLabel: 'Cards',
-      tabBarIcon: ({ tintColor }) => <Icon name="credit-card" size={24} />
-    }
-  },
-  Swiper: {
-    screen: Swiper,
-    navigationOptions: {
-      tabBarLabel: 'Swiper',
       tabBarIcon: ({ tintColor }) => <Icon name="credit-card" size={24} />
     }
   },

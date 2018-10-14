@@ -73,6 +73,7 @@ export default class SliderEntry extends Component {
             style={[styles.radiusMask, even ? styles.radiusMaskEven : {}]}
           />
         </View>
+
         <View
           style={[styles.textContainer, even ? styles.textContainerEven : {}]}
         >
@@ -83,6 +84,16 @@ export default class SliderEntry extends Component {
           >
             {tip}
           </Text>
+        </View>
+        <View
+          style={{
+            position: 'absolute',
+            width: 110,
+            height: 200,
+            left: 200,
+            top: 370
+          }}
+        >
           <Icon
             component={TouchableNativeFeedback}
             name="heart"

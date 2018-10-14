@@ -6,12 +6,14 @@ import {
   Text,
   StatusBar,
   SafeAreaView,
-  ImageBackground
+  ImageBackground,
+  ActivityIndicator
 } from 'react-native';
+import { Header } from 'react-native-elements';
 import Carousel from 'react-native-snap-carousel';
 
 import { sliderWidth, itemWidth } from '../styles/SliderEntry.style';
-import SliderEntry from '../screen/SliderEntry';
+import SliderEntry from './SliderEntry';
 import styles from '../styles/index.style';
 import Tip from '../model/Tip';
 
@@ -20,15 +22,11 @@ const SLIDER_1_FIRST_ITEM = 1;
 
 var taskArray = [];
 
-export default class example extends Component {
-  state = {
-    data: []
-  };
+export default class CardSwiper extends Component {
+  state = { data: [] };
   constructor(props) {
     super(props);
-    this.state = {
-      slider1ActiveSlide: SLIDER_1_FIRST_ITEM
-    };
+    this.state = { slider1ActiveSlide: SLIDER_1_FIRST_ITEM };
   }
 
   componentWillMount() {
@@ -83,6 +81,15 @@ export default class example extends Component {
         source={require('../assets/bg.png')}
         style={{ width: '100%', height: '100%', flex: 1 }}
       >
+        <Header
+          statusBarProps={{ barStyle: 'light-content' }}
+          centerComponent={{
+            text: 'Dr. Oz Diet Tips',
+            style: { color: '#fff' }
+          }}
+          outerContainerStyles={{ backgroundColor: '#3D6DCC' }}
+          innerContainerStyles={{ justifyContent: 'space-around' }}
+        />
         <View style={styles.container}>{example3}</View>
       </ImageBackground>
     );
