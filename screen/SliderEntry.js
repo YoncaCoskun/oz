@@ -92,7 +92,6 @@ export default class SliderEntry extends Component {
             raised
             iconStyle={{ fontSize: 30, color: 'red' }}
             containerStyle={{ marginRight: 0, alignSelf: 'flex-end' }}
-            onPress={console.log(this.props.id)}
           />
         </View>
       </TouchableOpacity>

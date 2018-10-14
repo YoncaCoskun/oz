@@ -7,26 +7,11 @@ export const colors = {
 };
 
 export default StyleSheet.create({
-  safeArea: {
-    flex: 1
-  },
   container: {
     flex: 1
   },
   gradient: {
     ...StyleSheet.absoluteFillObject
-  },
-  scrollview: {
-    flex: 1
-  },
-  exampleContainer: {
-    paddingVertical: 30
-  },
-  exampleContainerDark: {
-    backgroundColor: colors.black
-  },
-  exampleContainerLight: {
-    backgroundColor: 'white'
   },
   title: {
     paddingHorizontal: 30,
@@ -57,11 +42,5 @@ export default StyleSheet.create({
   },
   paginationContainer: {
     paddingVertical: 8
-  },
-  paginationDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 8
   }
 });

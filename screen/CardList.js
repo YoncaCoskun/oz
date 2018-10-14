@@ -8,9 +8,17 @@ import {
   Image,
   Text
 } from 'react-native';
-import { List, ListItem, Header } from 'react-native-elements';
+import {
+  List,
+  ListItem,
+  Header,
+  Card,
+  Icon,
+  TouchableNativeFeedback
+} from 'react-native-elements';
 import Tip from '../model/Tip';
 import PopupDialog from 'react-native-popup-dialog';
+import PopUpDialog from './PopUpDialog';
 
 var taskArray = [];
 
@@ -92,7 +100,8 @@ class CardList extends React.Component {
       <ListItem
         avatar={{ uri: rowData.image }}
         style={styles.t_listTip}
-        title={rowData.tip}
+        title={rowData.title}
+        subtitle={rowData.tip}
         rightIcon={
           rowData.isLike
             ? {
@@ -109,20 +118,9 @@ class CardList extends React.Component {
     );
   }
   render() {
-    let currentView = <View />;
-
-    currentView = (
-      <ListView
-        style={styles.taskListView}
-        dataSource={this.state.dataSource}
-        renderRow={this.renderRow.bind(this)}
-        enableEmptySections={true}
-      />
-    );
     if (!this.state.isReady) {
       return <Expo.AppLoading />;
     }
-
     return (
       <View>
         <Header
@@ -147,7 +145,18 @@ class CardList extends React.Component {
           }}
         >
           <View>
-            <Text>Hello</Text>
+            <Card containerStyle={{ padding: 0 }}>
+              {taskArray.map(u => {
+                return (
+                  <ListItem
+                    key={u.id}
+                    roundAvatar
+                    title={u.title}
+                    avatar={{ uri: u.image }}
+                  />
+                );
+              })}
+            </Card>
           </View>
         </PopupDialog>
       </View>

@@ -13,7 +13,6 @@ import Carousel from 'react-native-snap-carousel';
 import { sliderWidth, itemWidth } from '../styles/SliderEntry.style';
 import SliderEntry from '../screen/SliderEntry';
 import styles from '../styles/index.style';
-import { ENTRIES1 } from '../static/entries';
 import Tip from '../model/Tip';
 
 const IS_ANDROID = Platform.OS === 'android';
