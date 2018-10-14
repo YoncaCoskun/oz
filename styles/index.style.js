@@ -34,7 +34,7 @@ export default StyleSheet.create({
     textAlign: 'center'
   },
   slider: {
-    marginTop: 150,
+    marginTop: 20,
     overflow: 'visible' // for custom animations
   },
   sliderContentContainer: {

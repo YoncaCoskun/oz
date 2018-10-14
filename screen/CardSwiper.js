@@ -16,7 +16,7 @@ import { sliderWidth, itemWidth } from '../styles/SliderEntry.style';
 import SliderEntry from './SliderEntry';
 import styles from '../styles/index.style';
 import Tip from '../model/Tip';
-
+import Righteous_Regular from '../assets/fonts/Righteous-Regular.ttf';
 const IS_ANDROID = Platform.OS === 'android';
 const SLIDER_1_FIRST_ITEM = 1;
 
@@ -77,21 +77,26 @@ export default class CardSwiper extends Component {
     const example3 = this.layoutExample('stack');
 
     return (
-      <ImageBackground
-        source={require('../assets/bg.png')}
-        style={{ width: '100%', height: '100%', flex: 1 }}
+      <View
+        style={{
+          width: '100%',
+          height: '100%',
+          flex: 1,
+          backgroundColor: 'rgba(52, 52, 52, 0.7)'
+        }}
       >
         <Header
           statusBarProps={{ barStyle: 'light-content' }}
           centerComponent={{
             text: 'Dr. Oz Diet Tips',
-            style: { color: '#fff' }
+            style: { color: '#fff', fontSize: 20, fontStyle: Righteous_Regular }
           }}
-          outerContainerStyles={{ backgroundColor: '#3D6DCC' }}
+          outerContainerStyles={{ backgroundColor: 'black' }}
           innerContainerStyles={{ justifyContent: 'space-around' }}
         />
+
         <View style={styles.container}>{example3}</View>
-      </ImageBackground>
+      </View>
     );
   }
 }

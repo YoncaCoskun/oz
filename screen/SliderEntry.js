@@ -80,7 +80,7 @@ export default class SliderEntry extends Component {
           {uppercaseTitle}
           <Text
             style={[styles.subtitle, even ? styles.subtitleEven : {}]}
-            numberOfLines={4}
+            numberOfLines={7}
           >
             {tip}
           </Text>
@@ -88,21 +88,27 @@ export default class SliderEntry extends Component {
         <View
           style={{
             position: 'absolute',
-            width: 110,
+            width: 100,
             height: 200,
-            left: 200,
-            top: 370
+            left: 290,
+            top: 430
           }}
         >
           <Icon
             component={TouchableNativeFeedback}
             name="heart"
-            color="#fff"
-            type={false ? 'font-awesome' : 'evilicon'}
+            type={true ? 'font-awesome' : 'evilicon'}
             size={24}
             raised
-            iconStyle={{ fontSize: 30, color: 'red' }}
-            containerStyle={{ marginRight: 0, alignSelf: 'flex-end' }}
+            iconStyle={{
+              fontSize: 20,
+              color: '#FEFFFF'
+            }}
+            containerStyle={{
+              marginRight: 0,
+              alignSelf: 'flex-end',
+              backgroundColor: '#E42E79'
+            }}
           />
         </View>
       </TouchableOpacity>

@@ -141,7 +141,7 @@ class CardList extends React.Component {
             text: 'Dr. Oz Diet Tips',
             style: { color: '#fff' }
           }}
-          outerContainerStyles={{ backgroundColor: '#3D6DCC' }}
+          outerContainerStyles={{ backgroundColor: 'black' }}
           innerContainerStyles={{ justifyContent: 'space-around' }}
         />
 
